@@ -51,8 +51,15 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
 
     <script>
+
+        $(document).ready(function () {
+            $(".decimal").maskMoney({thousands:'', decimal:'.', allowZero:true});
+            $(".money").maskMoney({thousands:'.', decimal:',', allowZero:true});
+        });
+
         function read(url, callback){
             $.ajax({
                 url,
@@ -101,10 +108,6 @@
                 body
             });
         }
-
-
-
-
     </script>
     @yield('script')
 
