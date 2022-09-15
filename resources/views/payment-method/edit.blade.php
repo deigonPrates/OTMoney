@@ -17,8 +17,7 @@
                 @include('payment-method._inputs')
                 {!! Form::close() !!}
             </div>
-            <div class="card-footer">
-            </div>
+            <div class="card-footer"></div>
         </div>
     </section>
 @endsection

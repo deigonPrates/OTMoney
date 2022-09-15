@@ -1,7 +1,3 @@
-@section('style')
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
-@endsection
-<fieldset>
 <div class="row">
     <div class="col-sm-12">
         <div class="d-flex justify-content-center form-horizontal">
@@ -35,13 +31,15 @@
         </div>
     </div>
 </div>
-</fieldset>
-
 
 <div class="d-flex justify-content-center form-horizontal">
     <div class="mt-3">
-        <a href="{{ route('charge.index') }}" class="btn btn-secondary mr-5"><i class="nav-icon fa-solid fa-ban"></i> Cancelar</a>
-        <button type="submit" class="btn btn-primary" id="submit-button"><i class="nav-icon fa-solid fa-floppy-disk"></i> Salvar</button>
+        <a href="{{ route('charge.index') }}" class="btn btn-secondary mr-5">
+            <i class="nav-icon fa-solid fa-ban"></i> Cancelar
+        </a>
+        <button type="submit" class="btn btn-primary" id="submit-button">
+            <i class="nav-icon fa-solid fa-floppy-disk"></i> Salvar
+        </button>
     </div>
 </div>
 

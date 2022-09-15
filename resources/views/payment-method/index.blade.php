@@ -14,10 +14,7 @@
             <div class="card-body">
                 @include('table.table')
             </div>
-
-            <div class="card-footer">
-            </div>
-
+            <div class="card-footer"></div>
         </div>
     </section>
 @endsection

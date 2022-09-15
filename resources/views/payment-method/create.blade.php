@@ -20,6 +20,4 @@
             </div>
         </div>
     </section>
-
-
 @endsection
