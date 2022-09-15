@@ -30,7 +30,7 @@
                     </a>
                     <ul class="nav nav-treeview pl-3">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('charge.index') }}" class="nav-link">
                                 <i class="fa-solid fa-receipt nav-icon"></i>
                                 <p>Taxas</p>
                             </a>
