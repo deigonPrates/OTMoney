@@ -36,7 +36,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('payment-method.index') }}" class="nav-link">
                                 <i class="fa-solid fa-cash-register nav-icon"></i>
                                 <p>Forma de pagamento</p>
                             </a>

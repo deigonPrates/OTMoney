@@ -41,7 +41,7 @@ class Simulation extends Model
     protected $fillable = [
         'user_id',
         'payment_method_id',
-        'payment_method_id',
+        'charge_id',
         'origin',
         'destiny',
         'quotation',
