@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 use Yajra\DataTables\DataTables;
 
@@ -85,6 +86,20 @@ class PaymentMethodController extends Controller
         return response()->json([]);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function search(Request $request): JsonResponse
+    {
+        $payments = PaymentMethod::select(['id', DB::raw('description as name')])
+            ->where('description', 'like', '%'.$request->get('name').'%')
+            ->orderBy('description')
+            ->limit(10)
+            ->get();
+
+        return response()->json($payments);
+    }
     /**
      * @return Factory|View|Application
      */
