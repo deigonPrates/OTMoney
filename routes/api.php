@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\CurrencyCombinationController;
+use App\Http\Controllers\PaymentMethodController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('currency/origin',       [CurrencyCombinationController::class, 'origin'])->name('currency.search.origin');
+Route::get('currency/destiny',      [CurrencyCombinationController::class, 'destiny'])->name('currency.search.destiny');
+Route::get('payment-method/search', [PaymentMethodController::class, 'search'])->name('payment.method.search');
