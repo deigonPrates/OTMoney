@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Charge;
+use App\Models\CurrencyCombination;
 use App\Models\PaymentMethod;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Http;
 
 class DatabaseSeeder extends Seeder
 {
@@ -38,5 +40,21 @@ class DatabaseSeeder extends Seeder
             'rate'        => 7.63,
             'status' => 1
         ]);
+
+        $response = Http::get('https://economia.awesomeapi.com.br/json/available');
+        $coins = $response->json();
+
+        foreach ($coins as $key => $value){
+            $coin        = explode('-', $key);
+            $description = explode('/', $value);
+
+            CurrencyCombination::create([
+                'coin_origin'  => $coin[0],
+                'name_origin'  => $description[0],
+                'coin_destiny' => $coin[1],
+                'name_destiny' => $description[1],
+            ]);
+        }
+
     }
 }
