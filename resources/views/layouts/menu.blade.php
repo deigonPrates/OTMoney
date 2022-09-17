@@ -44,13 +44,13 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('simulation.create') }}" class="nav-link">
                         <i class="nav-icon fas fa-square-poll-horizontal"></i>
                         <p>Simulação</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('simulation.index') }}" class="nav-link">
                         <i class="nav-icon fa-solid fa-clock-rotate-left"></i>
                         <p> Histórico</p>
                     </a>

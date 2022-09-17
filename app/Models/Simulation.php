@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * App\Models\Simulation
@@ -41,11 +43,18 @@ class Simulation extends Model
     protected $fillable = [
         'user_id',
         'payment_method_id',
-        'charge_id',
         'origin',
-        'destiny',
-        'quotation',
         'gross',
-        'liquid',
+        'conversion_rate',
+        'payment_rate'
     ];
+
+    public function simulationCurrencies(): HasMany
+    {
+        return $this->hasMany(SimulationCurrencies::class, 'simulation_id', 'id');
+    }
+    public function paymentMethod(): HasOne
+    {
+        return $this->hasOne(PaymentMethod::class, 'id', 'payment_method_id');
+    }
 }

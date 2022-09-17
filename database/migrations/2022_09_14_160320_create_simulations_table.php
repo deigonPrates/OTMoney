@@ -17,12 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('payment_method_id')->constrained('payment_methods');
-            $table->foreignId('charge_id')->constrained('charges');
             $table->string('origin');
-            $table->string('destiny');
-            $table->decimal('quotation');
             $table->decimal('gross');
-            $table->decimal('liquid');
+            $table->decimal('conversion_rate');
+            $table->decimal('payment_rate');
             $table->timestamps();
         });
     }

@@ -23,7 +23,11 @@
     <link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">
 
     @yield('styles')
-
+    <style>
+        .dataTables_wrapper .dataTables_paginate .paginate_button{
+            padding: 0!important;
+        }
+    </style>
    <body class="hold-transition sidebar-mini">
     <div class="wrapper">
 
@@ -48,6 +52,7 @@
     <script src="{{ asset('js/adminlte.min.js') }}"></script>
     <!-- Template Main JS File -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/selectize.min.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
@@ -107,6 +112,65 @@
                 title,
                 body
             });
+        }
+
+        function globalMoney(money, mask){
+            console.log({style: 'currency', currency: mask})
+            const formatter = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: mask
+            });
+
+            return formatter.format(money)
+        }
+
+        function receipt(data){
+            let html = "";
+            data.forEach(item =>{
+                html += ` <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header bg-dark">
+                                            <h3 class="card-title">${item.simulation.origin} - ${item.currency}</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-group  list-group-flush">
+                                                <li class="list-group-item"><strong>Moeda de origem:</strong> ${item.simulation.origin}</li>
+                                                <li class="list-group-item"><strong>Moeda de destino:</strong> ${item.currency}</li>
+                                                <li class="list-group-item"><strong>Valor para conversão:</strong> ${globalMoney(item.simulation.gross, item.simulation.origin)}</li>
+                                                <li class="list-group-item"><strong>Forma de pagamento:</strong> ${item.simulation.payment_method.description}</li>
+                                                <li class="list-group-item">
+                                                    <strong>Valor da "Moeda de destino" usado para conversão:</strong>
+                                                    ${globalMoney(item.quotation, item.currency)}
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <strong>Taxa de pagamento:</strong>
+                                                    ${globalMoney(item.simulation.payment_rate, item.simulation.origin)}
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <strong>Taxa de conversão:</strong>
+                                                    ${globalMoney(item.simulation.conversion_rate, item.simulation.origin)}
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <strong>Valor utilizado para conversão descontando as taxas:</strong>
+                                                    ${globalMoney(item.simulation.gross - item.simulation.payment_rate - item.simulation.conversion_rate, item.simulation.origin)}
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <strong>Valor comprado em "Moeda de destino":</strong>
+                                                    ${globalMoney(((item.simulation.gross - item.simulation.payment_rate - item.simulation.conversion_rate) * item.quotation).toFixed(2),item.currency)}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>`;
+            });
+            $('#result-simulation-show').empty().append(html);
+            $('#result-simulation')?.removeClass('d-none');
+
+            $('html, body').animate({ scrollTop: $('#result-simulation-show').offset().top}, 1000);
+        }
+
+        function modalClose(id){
+            $(id).modal('hide');
         }
     </script>
     @yield('script')

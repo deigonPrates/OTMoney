@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\SimulationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,14 +24,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('home',      [HomeController::class, 'index'])->name('home');
+    Route::get('home', [HomeController::class, 'index'])->name('home');
 
     Route::resource('charge',         ChargeController::class);
     Route::resource('payment-method', PaymentMethodController::class);
+    Route::resource('simulation',     SimulationController::class);
 
     Route::group(['prefix' => 'list'], function () {
         Route::get('charge',          [ChargeController::class, 'list'])->name('charge.list');
         Route::get('payment-method',  [PaymentMethodController::class, 'list'])->name('payment-method.list');
+        Route::get('simulation',      [SimulationController::class, 'list'])->name('simulation.list');
     });
 
 });
