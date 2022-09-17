@@ -11,6 +11,29 @@
     </tr>
     </thead>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="modalDetail" tabindex="-1" aria-labelledby="modalDetail" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDetailLabel">Detalhes da simualção</h5>
+                <a href="javascript:void(0)" class="text-dark" onclick="modalClose('#modalDetail')"><span class="fa-solid fa-xmark"></span></a>
+            </div>
+            <div class="modal-body">
+                <div class="row"  id="result-simulation-show">
+                    <h1>Nenhum item encontrado</h1>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="modalClose('#modalDetail')">
+                    <i class="fa-solid fa-xmark"></i> Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
@@ -276,6 +299,7 @@
                     @endforeach
                 ]
             });
+            @if(isset($table['delete']))
             destroy = function(id) {
                 Swal.fire({
                     title: 'Você tem certeza que deseja remover?',
@@ -316,6 +340,34 @@
                     }
                 })
             }
+            @endif
+            @if(isset($table['show']))
+                detail = function(id) {
+                    let url = '{{ route($table['show'],[0]) }}';
+                    $.ajax({
+                        type: 'GET',
+                        url: url.replace('/0', '/'+id),
+                        dataType: 'json',
+                        success: function (data) {
+                            receipt(data);
+                            $('#modalDetail').modal('show');
+                        },
+                        error: function (data) {
+                            let mess = data.responseJSON;
+                            if(typeof messge !== 'string'){
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    mess = value+"<br>";
+                                });
+                            }
+                            Swal.fire({
+                                title: 'Erro ao tenter exibir',
+                                text: mess,
+                                icon: 'error'}
+                            );
+                        }
+                    });
+                }
+            @endif
         });
     </script>
 @endsection
