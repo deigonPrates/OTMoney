@@ -33,7 +33,7 @@ class PaymentMethodController extends Controller
                 'name'  => 'description'
             ],
             [
-                'label' => 'Taxa',
+                'label' => 'Taxa(%)',
                 'name'  => 'rate'
             ],
             [

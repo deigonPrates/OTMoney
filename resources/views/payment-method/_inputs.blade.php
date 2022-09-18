@@ -30,7 +30,7 @@
 <div class="d-flex justify-content-center form-horizontal">
     <div class="mt-3">
         <a href="{{ route('charge.index') }}" class="btn btn-secondary mr-5">
-            <i class="nav-icon fa-solid fa-ban"></i> Cancelar
+            <i class="fa-solid fa-xmark"></i> Cancelar
         </a>
         <button type="submit" class="btn btn-primary" id="submit-button">
             <i class="nav-icon fa-solid fa-floppy-disk"></i> Salvar

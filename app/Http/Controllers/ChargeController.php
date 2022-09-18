@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Charge;
-use App\Models\Simulation;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -28,7 +27,7 @@ class ChargeController extends Controller
                 'name'  => 'id'
             ],
             [
-                'label' => 'Valor',
+                'label' => 'Valor (%)',
                 'name'  => 'value'
             ],
             [
@@ -78,10 +77,10 @@ class ChargeController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('min', function($row){
-                    return 'R$ '.($row->status);
+                    return 'R$ '.($row->min);
                 })
                 ->addColumn('max', function($row){
-                    return 'R$ '.($row->status);
+                    return 'R$ '.($row->max);
                 })
                 ->addColumn('status', function($row){
                     return ($row->status) ? 'Ativo' : 'Inativo';
@@ -179,9 +178,6 @@ class ChargeController extends Controller
     public function destroy(Charge $charge): JsonResponse
     {
         try {
-            if(count(Simulation::where('charge_id', '=', $charge->id)->get()) > 0){
-                throw new Exception('Existem items associados');
-            }
             $charge->delete();
             return response()->json([]);
         } catch (Throwable $th) {
