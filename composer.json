@@ -13,11 +13,11 @@
         "laravel/ui": "^4.0",
         "laravelcollective/html": "^6.3",
         "yajra/laravel-datatables-oracle": "^10.0",
-        "ext-intl": "*"
+        "ext-intl": "*",
+        "fakerphp/faker": "^1.9.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",
-        "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
         "lucascudo/laravel-pt-br-localization": "^1.2",
