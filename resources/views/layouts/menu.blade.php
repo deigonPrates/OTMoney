@@ -21,7 +21,7 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="nav-item {{ \Illuminate\Support\Facades\Request::segment(1) === 'admin' ? 'menu-open' : ''}}">
+                <li class="nav-item {{ \Illuminate\Support\Facades\Request::segment(1) === 'config' ? 'menu-open' : ''}}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-gear"></i>
                         <p>Configurações
