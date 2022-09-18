@@ -7,18 +7,15 @@ use App\Models\Charge;
 use App\Models\PaymentMethod;
 use App\Models\Simulation;
 use App\Models\SimulationCurrencies;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
-use NumberFormatter;
 use Throwable;
 use Yajra\DataTables\DataTables;
 
@@ -87,24 +84,23 @@ class SimulationController extends Controller
     {
         if ($request->ajax()) {
             $data = Simulation::select(['*']);
-            $fmt = new NumberFormatter( 'pt_BR', NumberFormatter::CURRENCY );
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('gross', function($row) use($fmt){
-                   return $fmt->formatCurrency($row->gross, $row->origin);
+                ->addColumn('gross', function($row){
+                   return formatCurrency($row->gross, $row->origin);
                 })
                 ->addColumn('payment_method_id', function($row){
                     $paymentMethod = PaymentMethod::find($row->payment_method_id);
                    return $paymentMethod->description;
                 })
-                ->addColumn('conversion_rate', function($row) use ($fmt){
-                    return $fmt->formatCurrency($row->conversion_rate, $row->origin);
+                ->addColumn('conversion_rate', function($row){
+                    return formatCurrency($row->conversion_rate, $row->origin);
                 })
-                ->addColumn('payment_rate', function($row) use ($fmt){
-                    return $fmt->formatCurrency($row->payment_rate, $row->origin);
+                ->addColumn('payment_rate', function($row){
+                    return formatCurrency($row->payment_rate, $row->origin);
                 })
                 ->addColumn('created_at', function($row){
-                    return '<p class="text-nowrap">'.Carbon::parse($row->created_at)->format('d/m/Y H:i').'</p>';
+                    return '<p class="text-nowrap">'. formatDate($row->created_at, 'd/m/Y H:i').'</p>';
                 })
                 ->addColumn('action', function($row){
                     return '<a href="javascript:void(0)" onclick="detail(' . $row->id . ')" class="delete btn btn-info btn-sm">
@@ -136,21 +132,21 @@ class SimulationController extends Controller
     {
         $request->validate([
             'payment_method_id' => 'required',
-            'origin' => 'required',
-            'gross' => 'required',
+            'origin'            => 'required',
+            'gross'             => 'required',
         ], [
             'payment_method_id.required' => 'Escolha uma forma de pagamento',
-            'origin.required' => 'A Moeda de origem é obrigatória',
-            'gross.required' => 'O Valor (R$) é obrigatório',
+            'origin.required'            => 'A Moeda de origem é obrigatória',
+            'gross.required'             => 'O Valor (R$) é obrigatório',
         ]);
 
 
         try {
 
-            if ($this->removeMaskMoney($request->get('gross')) < 1000) {
+            if (removeMaskMoney($request->get('gross')) < 1000) {
                 throw new Exception( 'Valor mínimo: R$ 1.000,00', 400);
             }
-            if ($this->removeMaskMoney($request->get('gross')) > 100000) {
+            if (removeMaskMoney($request->get('gross')) > 100000) {
                 throw new Exception('Valor maxímo: R$ 100.000,00', 400);
             }
 
@@ -163,9 +159,9 @@ class SimulationController extends Controller
                 'user_id' => Auth::id(),
                 'payment_method_id' => $paymentMethod->id,
                 'origin' => $request->get('origin'),
-                'gross' => $this->removeMaskMoney($request->get('gross')),
-                'conversion_rate' => (($this->removeMaskMoney($request->get('gross')) / 100) * $charge->value),
-                'payment_rate' => (($this->removeMaskMoney($request->get('gross')) / 100) * $paymentMethod->rate),
+                'gross' => removeMaskMoney($request->get('gross')),
+                'conversion_rate' => ((removeMaskMoney($request->get('gross')) / 100) * $charge->value),
+                'payment_rate' => ((removeMaskMoney($request->get('gross')) / 100) * $paymentMethod->rate),
             ]);
 
             $this->createSimulationCurrencies($request, $simulation);
@@ -218,7 +214,7 @@ class SimulationController extends Controller
      * @param Simulation $simulation
      */
     private function createSimulationCurrencies(Request $request, Simulation $simulation){
-        $quotation     = $this->quotation($request);
+        $quotation = $this->quotation($request);
         if(is_array($quotation)){
             foreach ($quotation as $item => $value){
                 SimulationCurrencies::create([
@@ -248,16 +244,5 @@ class SimulationController extends Controller
         }
         $result = Http::get('https://economia.awesomeapi.com.br/json/last/'.$combination);
         return $result->json();
-    }
-
-    /**
-     * @param $value
-     * @return float
-     */
-    private function removeMaskMoney($value): float
-    {
-        $value = str_replace('.', '', $value);
-        $value = str_replace(',', '.', $value);
-        return  (float) $value;
     }
 }
