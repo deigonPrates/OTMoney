@@ -12,8 +12,25 @@
                             <h3>{{ $currencyOriginList[0]->origin  ?? ' '}}</h3>
                             <p>Moeda mais utilizada (Origem)</p>
                         </div>
-                        <div class="icon">
-                            <i class="ion fa-solid fa-bag-shopping"></i>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>{{ $currencyDestinyList[0]->currency  ?? ' '}}</h3>
+                            <p>Moeda mais utilizada (Destino)</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-dark">
+                        <div class="inner">
+                            <h3 class="text-light">{{ $simulationsTotal }}</h3>
+                            <p class="text-light">Simulações realizadas</p>
                         </div>
                     </div>
                 </div>
@@ -22,37 +39,8 @@
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>{{ $currencyDestinyList[0]->currency  ?? ' '}}</h3>
-                            <p>Moeda mais utilizada (Destino)</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion fa-solid fa-signal"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-warning">
-                        <div class="inner">
-                            <h3 class="text-light">{{ $simulationsTotal }}</h3>
-                            <p class="text-light">Simulações realizadas</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion fa-solid fa-user-plus"></i>
-                        </div>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-danger">
-                        <div class="inner">
                             <h3>{{ number_format($simulationsValue,2,',', '.') }}</h3>
                             <p>Valor movimentado</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion fa-solid fa-chart-pie"></i>
                         </div>
                     </div>
                 </div>
