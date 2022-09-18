@@ -23,9 +23,14 @@
                     <h3 class="card-title">Resultado da Simulação</h3>
                 </div>
                 <div class="card-body">
-                    <div class="row"  id="result-simulation-show"></div>
+                    <input type="hidden" id="simulation-id" value="0">
+                    <div class="row" id="result-simulation-show"></div>
                 </div>
-                <div class="card-footer"> </div>
+                <div class="card-footer">
+                    <button type="button" class="btn btn-info" onclick="sendMail()">
+                        <i class="fa-solid fa-envelope"></i> Enviar por email
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -101,6 +106,7 @@
                         data: $('#form-simulator').serialize(),
                         dataType: 'JSON',
                         success: function(data){
+                            $('#simulation-id').val(data[0].simulation_id);
                             receipt(data);
                         },
                         error: function(response){
@@ -134,6 +140,25 @@
                     read(url, callback)
                 },
                 create:false,
+            });
+        }
+
+        function sendMail(){
+            let tempUrl = '{{ route('simulation.send.mail', 0) }}';
+            $.ajax({
+                url: tempUrl.replace('/0', '/'+$('#simulation-id').val()),
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(){
+                    makeSuccessToast('E-mail enviado.', 'confira sua caixa de entrada, caso não encontre verifique a de spam')
+                },
+                error: function(response){
+                    let errors = '';
+                    $.each(response.responseJSON.errors,function(field_name,error){
+                        errors += error+'<br>';
+                    });
+                    makeErrorToast('Falha ao processar requisição', errors, 4000)
+                }
             });
         }
     </script>

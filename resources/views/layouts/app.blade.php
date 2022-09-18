@@ -115,13 +115,15 @@
         }
 
         function globalMoney(money, mask){
-            console.log({style: 'currency', currency: mask})
-            const formatter = new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: mask
-            });
-
-            return formatter.format(money)
+            try {
+                const formatter = new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: mask
+                });
+                return formatter.format(money);
+            }catch(er) {
+               return money;
+            }
         }
 
         function receipt(data){

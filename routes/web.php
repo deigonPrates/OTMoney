@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('charge',         ChargeController::class);
     Route::resource('payment-method', PaymentMethodController::class);
     Route::resource('simulation',     SimulationController::class);
+    Route::get('simulation/mail/{simulation}',     [SimulationController::class, 'sendMail'])->name('simulation.send.mail');
 
     Route::group(['prefix' => 'list'], function () {
         Route::get('charge',          [ChargeController::class, 'list'])->name('charge.list');

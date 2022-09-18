@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SimulationSendMail;
 use App\Models\Charge;
 use App\Models\PaymentMethod;
 use App\Models\Simulation;
@@ -16,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use NumberFormatter;
 use Throwable;
 use Yajra\DataTables\DataTables;
@@ -182,6 +184,22 @@ class SimulationController extends Controller
     {
         return $this->receipt($simulation);
     }
+
+    /**
+     * @param Simulation $simulation
+     * @return JsonResponse
+     */
+    public function sendMail(Simulation $simulation): JsonResponse
+    {
+       try{
+           $data = $this->receipt($simulation);
+           Mail::send(new SimulationSendMail($data));
+           return response()->json(['Email enviado']);
+       }catch (Throwable $th){
+           return response()->json(['falha ao enviar', $th->getMessage()], 500);
+       }
+    }
+
 
     /**
      * @param Simulation $simulation
