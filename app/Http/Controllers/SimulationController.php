@@ -168,7 +168,7 @@ class SimulationController extends Controller
 
             return $this->receipt($simulation);
         } catch (Throwable $th) {
-            return response()->json('errors', [$th->getCode(), $th->getMessage()], $th->getCode());
+            return response()->json(['errors' => [$th->getMessage()]], $th->getCode());
         }
     }
 
