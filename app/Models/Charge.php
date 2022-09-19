@@ -33,6 +33,10 @@ use NumberFormatter;
 class Charge extends Model
 {
     use HasFactory;
+
+    const STATUS_ATIVO   = 1;
+    const STATUS_INATIVO = 0;
+
     protected $fillable = [
         'value',
         'min',

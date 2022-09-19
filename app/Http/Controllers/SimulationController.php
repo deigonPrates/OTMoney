@@ -153,6 +153,7 @@ class SimulationController extends Controller
             $paymentMethod = PaymentMethod::findOrFail($request->get('payment_method_id'));
             $charge = Charge::where('min', '<=', $request->get('gross'))
                 ->where('max', '>=', $request->get('gross'))
+                ->where('status', '=', Charge::STATUS_ATIVO)
                 ->first();
             $onePercent = (removeMaskMoney($request->get('gross')) / 100);
             $simulation = Simulation::create([

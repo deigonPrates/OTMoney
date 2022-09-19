@@ -94,6 +94,7 @@ class PaymentMethodController extends Controller
     {
         $payments = PaymentMethod::select(['id', DB::raw('description as name')])
             ->where('description', 'like', '%'.$request->get('name').'%')
+            ->where('status','=', PaymentMethod::STATUS_ATIVO)
             ->orderBy('description')
             ->limit(10)
             ->get();
