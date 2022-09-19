@@ -132,7 +132,7 @@
         });
 
         function clearMoneyInput(ref){
-            return ref.replace('.','').replace(',','.');
+            return ref.replaceAll('.','').replace(',','.');
         }
 
         function loadDestiny(){
