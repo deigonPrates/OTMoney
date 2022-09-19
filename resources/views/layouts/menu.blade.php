@@ -46,7 +46,7 @@
                 <li class="nav-item">
                     <a href="{{ route('simulation.create') }}" class="nav-link">
                         <i class="nav-icon fas fa-square-poll-horizontal"></i>
-                        <p>Simulação</p>
+                        <p>Simulador</p>
                     </a>
                 </li>
                 <li class="nav-item">
