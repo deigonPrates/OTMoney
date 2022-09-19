@@ -105,11 +105,19 @@
                         type: 'POST',
                         data: $('#form-simulator').serialize(),
                         dataType: 'JSON',
+                        beforeSend: function() {
+                            Swal.fire({
+                                html: '<b>Carregando...</b><br><span class="fas fa-spinner fa-pulse" style="font-size:35px"></span>',
+                                showConfirmButton: false
+                            });
+                        },
                         success: function(data){
+                            Swal.close();
                             $('#simulation-id').val(data[0].simulation_id);
                             receipt(data);
                         },
                         error: function(response){
+                            Swal.close();
                             let errors = '';
                             $.each(response.responseJSON.errors,function(field_name,error){
                                 errors += error+'<br>';
@@ -149,10 +157,18 @@
                 url: tempUrl.replace('/0', '/'+$('#simulation-id').val()),
                 type: 'GET',
                 dataType: 'JSON',
+                beforeSend: function() {
+                    Swal.fire({
+                        html: '<b>Carregando...</b><br><span class="fas fa-spinner fa-pulse" style="font-size:35px"></span>',
+                        showConfirmButton: false
+                    });
+                },
                 success: function(){
+                    Swal.close();
                     makeSuccessToast('E-mail enviado.', 'confira sua caixa de entrada, caso não encontre verifique a de spam')
                 },
                 error: function(response){
+                    Swal.close();
                     let errors = '';
                     $.each(response.responseJSON.errors,function(field_name,error){
                         errors += error+'<br>';
