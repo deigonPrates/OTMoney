@@ -77,10 +77,10 @@ class ChargeController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('min', function($row){
-                    return 'R$ '.($row->min);
+                    return ($row->min);
                 })
                 ->addColumn('max', function($row){
-                    return 'R$ '.($row->max);
+                    return ($row->max);
                 })
                 ->addColumn('status', function($row){
                     return ($row->status) ? 'Ativo' : 'Inativo';
@@ -139,7 +139,7 @@ class ChargeController extends Controller
     public function edit(Charge $charge): Factory|View|Application
     {
         return view('charge.edit', [
-            'charge'       => $charge,
+            'charge'     => $charge,
             'titlePage'  => $this->titlePage,
             'routePage'  => $this->routePage,
             'actionPage' => 'Novo',

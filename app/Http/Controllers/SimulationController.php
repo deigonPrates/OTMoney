@@ -31,31 +31,31 @@ class SimulationController extends Controller
         $this->table['columns'] = [
             [
                 'label' => '#',
-                'name' => 'id'
+                'name'  => 'id'
             ],
             [
                 'label' => 'Valores',
-                'name' => 'gross'
+                'name'  => 'gross'
             ],
             [
                 'label' => 'Forma de pagamento',
-                'name' => 'payment_method_id'
+                'name'  => 'payment_method_id'
             ],
             [
                 'label' => 'Taxa de conversão',
-                'name' => 'conversion_rate'
+                'name'  => 'conversion_rate'
             ],
             [
                 'label' => 'Taxa de pagamento',
-                'name' => 'payment_rate'
+                'name'  => 'payment_rate'
             ],
             [
                 'label' => 'Data',
-                'name' => 'created_at'
+                'name'  => 'created_at'
             ],
             [
                 'label' => 'Ações',
-                'name' => 'action'
+                'name'  => 'action'
             ],
         ];
         $this->table['list'] = 'simulation.list';
@@ -68,9 +68,9 @@ class SimulationController extends Controller
     public function index(): Factory|View|Application
     {
         return view("simulation.index", [
-            'table' => $this->table,
-            'titlePage' => $this->titlePage,
-            'routePage' => $this->routePage,
+            'table'      => $this->table,
+            'titlePage'  => $this->titlePage,
+            'routePage'  => $this->routePage,
             'actionPage' => 'Listar',
         ]);
     }
@@ -118,8 +118,8 @@ class SimulationController extends Controller
     public function create(): Factory|View|Application
     {
         return view('simulation.create', [
-            'titlePage' => $this->titlePage,
-            'routePage' => $this->routePage,
+            'titlePage'  => $this->titlePage,
+            'routePage'  => $this->routePage,
             'actionPage' => 'Novo',
         ]);
     }
@@ -154,14 +154,14 @@ class SimulationController extends Controller
             $charge = Charge::where('min', '<=', $request->get('gross'))
                 ->where('max', '>=', $request->get('gross'))
                 ->first();
-
+            $onePercent = (removeMaskMoney($request->get('gross')) / 100);
             $simulation = Simulation::create([
-                'user_id' => Auth::id(),
+                'user_id'           => Auth::id(),
                 'payment_method_id' => $paymentMethod->id,
-                'origin' => $request->get('origin'),
-                'gross' => removeMaskMoney($request->get('gross')),
-                'conversion_rate' => ((removeMaskMoney($request->get('gross')) / 100) * $charge->value),
-                'payment_rate' => ((removeMaskMoney($request->get('gross')) / 100) * $paymentMethod->rate),
+                'origin'            => $request->get('origin'),
+                'gross'             => removeMaskMoney($request->get('gross')),
+                'conversion_rate'   => ($onePercent * $charge->value),
+                'payment_rate'      => ($onePercent * $paymentMethod->rate),
             ]);
 
             $this->createSimulationCurrencies($request, $simulation);
